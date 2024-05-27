@@ -1,0 +1,1205 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "description": "API for Social Media application",
+        "title": "Social Media Application API"
+    },
+    "host": "localhost:3000",
+    "securityDefinitions": {
+        "jwt": {}
+    },
+    "paths": {
+        "/api/user/sign-up": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Sign-Up",
+                "description": "User resgistration to access application.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User Details",
+                        "operationId": "registerUser",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "gender": {
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid User details."
+                    },
+                    "500": {
+                        "description": "Oops! Something went wrong... Please try again later!"
+                    }
+                }
+            }
+        },
+        "/api/user/sign-in": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login",
+                "description": "User login to get token",
+                "operationId": "userLogin",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User Credentials",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Successful"
+                    },
+                    "400": {
+                        "description": "Please enter email/password"
+                    },
+                    "401": {
+                        "description": "Invalid email or passsword!"
+                    }
+                }
+            }
+        },
+        "/api/user/sign-out": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Sign-Out",
+                "description": "User logout from the application.",
+                "operationId": "userLogout",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully."
+                    }
+                }
+            }
+        },
+        "/api/user/sign-out-from-all-devices": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Sign-Out from everywhere.",
+                "description": "User logout from the all devices active sessions.",
+                "operationId": "logoutFromAllDevices",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully."
+                    }
+                }
+            }
+        },
+        "/api/user/get-details/{userId}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User Details",
+                "description": "To get user details",
+                "operationId": "getUserDetails",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "The id of the user.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find user details."
+                    },
+                    "401": {
+                        "description": "User not found! register yourself now!!"
+                    }
+                }
+            }
+        },
+        "/api/user/admin/get-all-user-details": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "All user details",
+                "description": "To get all user details",
+                "operationId": "getAllUsers",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all user details."
+                    }
+                }
+            }
+        },
+        "/api/user/update-details/{userId}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user profile",
+                "description": "",
+                "operationId": "updateUserProfile",
+
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "The id of the user.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "Values are [admin or user]",
+                        "required": true
+                    },
+                    {
+                        "name": "profileImgUrl",
+                        "in": "formData",
+                        "type": "file",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User details updated successfully."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/posts/": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Logged-in user posts.",
+                "description": "All posts of currently logged in user.",
+                "operationId": "getPostsByUser",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "All posts in the result key of response object."
+                    },
+                    "404": {
+                        "description": "Posts not found."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Draft a new Post.",
+                "description": "New post will create.",
+                "operationId": "createPost",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "imageUrl",
+                        "in": "formData",
+                        "type": "file",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "caption",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "In result key of response object you will find newly created post and message as post drafted successfully."
+                    },
+                    "400": {
+                        "description": "Error while creating post."
+                    }
+                }
+            }
+        },
+        "/api/posts/all": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Fetch all posts",
+                "description": "Fetching all posts and display according to pagination parameters.",
+                "operationId": "getAllPosts",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all post."
+                    },
+                    "404": {
+                        "description": "Error while fetching posts."
+                    }
+                }
+            }
+        },
+        "/api/posts/{postId}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "To fetch a single Post.",
+                "description": "Able to fetch mentioned id post ",
+                "operationId": "getPostById",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find fetched post."
+                    },
+                    "404": {
+                        "description": "Post not found. Please verify postId you want."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Update a post.",
+                "description": "Only authenticated user updates a mentioned id post.",
+                "operationId": "updatePostById",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "imageUrl",
+                        "in": "formData",
+                        "type": "file",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "caption",
+                        "in": "formData",
+                        "type": "string",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post updated successfully."
+                    },
+                    "400": {
+                        "description": "Invalid postId supplied."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Delete a post.",
+                "description": "Only authenticated user deletes a mentioned id post.",
+                "operationId": "deletePostById",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to delete.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post deleted successfully."
+                    },
+                    "400": {
+                        "description": "Invalid postId supplied."
+                    }
+                }
+            }
+        },
+        "/api/posts/filter": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Filter posts by caption.",
+                "description": "To get all post matching with mentioned captionand display according to pagination parameters..",
+                "operationId": "getAllPostsByCaption",
+                "parameters": [
+                    {
+                        "name": "caption",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Caption of post to filter",
+                        "required": true
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all filtered post."
+                    },
+                    "404": {
+                        "description": "Error while fetching posts."
+                    }
+                }
+            }
+        },
+        "/api/posts/archieve/{postId}": {
+            "put": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Archieve a post.",
+                "description": "Only authenticated user archieve a mentioned id post.",
+                "operationId": "archievePost",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to archieve.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post archieved successfully."
+                    },
+                    "400": {
+                        "description": "Invalid postId supplied."
+                    }
+                }
+            }
+        },
+        "/api/posts/publish/{postId}": {
+            "put": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Publish a Post",
+                "description": "Only authenticated user publish a mentioned id post.",
+                "operationId": "publishPost",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to publish.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post published successfully."
+                    },
+                    "400": {
+                        "description": "Invalid postId supplied."
+                    }
+                }
+            }
+        },
+        "/api/comments/{postId}": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "To fetch logged-in user comments for mentioned postId.",
+                "description": "Only logged-in user comments for mentioned postId will fetch.",
+                "operationId": "getAllCommentsById",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to get all comments on it.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all comments of respective postId and userId."
+                    },
+                    "404": {
+                        "description": "Respective post comments not found. Please verify postId that you want."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Comment on specific post.",
+                "description": "Only authenticated user will comment on mentioned Post.",
+                "operationId": "createCommentById",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to which the comment is.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Content of the comment.",
+                        "properties": {
+                            "content": {
+                                "type": "string",
+                                "required": true
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "In result key of response object you will find newly added comment and message as comment added successfully."
+                    },
+                    "400": {
+                        "description": "Error while uploading comment. Please verify postId that you want."
+                    }
+                }
+            }
+        },
+        "/api/comments/{commentId}": {
+            "put": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Updates content of a comment.",
+                "description": "Only authenticated user can update a mentioned id comment.",
+                "operationId": "updateCommentById",
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "The id of the comment to update .",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Content of the comment.",
+                        "properties": {
+                            "content": {
+                                "type": "string",
+                                "required": true
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment updated successfully."
+                    },
+                    "400": {
+                        "description": "Error while uploading comment. Please verify commentId that you want to update."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Deletes a comment",
+                "description": "Only authenticated user deletes a mentioned id comment.",
+                "operationId": "deleteCommentById",
+                "parameters": [
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "The id of the comment to delete .",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment deleted successfully."
+                    },
+                    "400": {
+                        "description": "Error while deleting comment. Please verify commentId that you want to update."
+                    }
+                }
+            }
+        },
+        "/api/comments/all/{postId}": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get all comments of a post",
+                "description": "Fetching all comments of respective postId and display according to pagination parameters.",
+                "operationId": "getAllComments",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to fetch all comments on it.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all comments of respective postId."
+                    },
+                    "400": {
+                        "description": "Error while fetching comments. Please verify postId that you want to get."
+                    }
+                }
+            }
+        },
+        "/api/likes/{postId}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Like Count of a post.",
+                "description": "Get likes count.",
+                "operationId": "getLikesCount",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to fetch all comments on it.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "In count key of response object you will get likes count of respective postId."
+                    },
+                    "400": {
+                        "description": "Respective post not yet liked. Please verify postId that you want to get."
+                    }
+                }
+            }
+        },
+        "/api/likes/toggle/{postId}": {
+            "get": {
+                "tags": [
+                    "Likes"
+                ],
+                "summary": "Like or Dislike a post",
+                "description": "Only authenticated user Toggles Like or Dislike a post with mentioned postId",
+                "operationId": "likeOrDislikePost",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to fetch all comments on it.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed like successfully."
+                    },
+                    "201": {
+                        "description": "Liked successfully."
+                    },
+                    "400": {
+                        "description": "Error while like/dislike the post"
+                    }
+                }
+            }
+        },
+        "/api/bookmarks/": {
+            "get": {
+                "tags": [
+                    "Bookmarks"
+                ],
+                "summary": "All bookmarked post of a user.",
+                "description": "All bookmarked posts of logged-in user.",
+                "operationId": "getBookmarksByUser",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all bookmarks of respective userId."
+                    },
+                    "404": {
+                        "description": "Not yet bookmarked posts."
+                    },
+                    "400": {
+                        "description": "Error occured while bookmark a post."
+                    }
+                }
+            }
+        },
+        "/api/bookmarks/toggle/{postId}": {
+            "get": {
+                "tags": [
+                    "Bookmarks"
+                ],
+                "summary": "Bookmark or Remove bookmark a post",
+                "description": "Only authenticated user Toggles bookmark or remove bookmark a post with mentioned postId",
+                "operationId": "togglePostBookmark",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "The id of the post to fetch all comments on it.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed bookmark successfully."
+                    },
+                    "201": {
+                        "description": "Bookmarked successfully."
+                    },
+                    "400": {
+                        "description": "Error occured while bookmark/remove bookmark a post."
+                    }
+                }
+            }
+        },
+        "/api/friends/get-friends": {
+            "get": {
+                "tags": [
+                    "Friends"
+                ],
+                "summary": "All friends of a user.",
+                "description": "All friends of logged-in user.[ those friends whose friendship status is accepted.]",
+                "operationId": "getMyFriends",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all friends of respective userId."
+                    },
+                    "404": {
+                        "description": "Sorry! You don't have friends yet."
+                    }
+                }
+            }
+        },
+        "/api/friends/get-pending-requests": {
+            "get": {
+                "tags": [
+                    "Friends"
+                ],
+                "summary": "To get all pending friend requests.",
+                "description": "Pending friend requests of logged in user.[status is pending including all incoming & ougoing friend requests.]",
+                "operationId": "getPendingFriendRequests",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "In result key of response object you will find all pending friend requests of respective userId."
+                    },
+                    "404": {
+                        "description": "No pending request."
+                    }
+                }
+            }
+        },
+        "/api/friends/toggle-friendship/{friendId}": {
+            "get": {
+                "tags": [
+                    "Friends"
+                ],
+                "summary": "Easy mechanism to accept or reject friendship.",
+                "description": "Accept or recject friendship with mentioned friend.",
+                "operationId": "toggleFriendship",
+                "parameters": [
+                    {
+                        "name": "friendId",
+                        "in": "path",
+                        "description": "A friend ID to do friendship or reject it.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Oops! Your friendship broken."
+                    },
+                    "201": {
+                        "description": "Yeah! you are now friends of each other."
+                    },
+                    "400": {
+                        "description": "Error occured or You are alredy in friendship."
+                    }
+                }
+            }
+        },
+        "/api/friends/response-to-request/{friendId}/{action}": {
+            "get": {
+                "tags": [
+                    "Friends"
+                ],
+                "summary": "Response to friend request.",
+                "description": "Eigther accept or reject a friend request. [ for all friend request received to user and are in pending state. ]",
+                "operationId": "friendshipAcceptReject",
+                "parameters": [
+                    {
+                        "name": "friendId",
+                        "in": "path",
+                        "description": "A friend ID to do friendship or reject it.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "action",
+                        "in": "path",
+                        "description": "Action refers to accept, reject or pending.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Friendship accepted. or Friendship rejected."
+                    },
+                    "403": {
+                        "description": "Internal server error. Please try after some time."
+                    }
+                }
+            }
+        },
+        "/api/friends/send-friend-request/{friendId}": {
+            "get": {
+                "tags": [
+                    "Friends"
+                ],
+                "summary": "Send a friend request.",
+                "description": "Send a friend request.",
+                "operationId": "sendFriendRequest",
+                "parameters": [
+                    {
+                        "name": "friendId",
+                        "in": "path",
+                        "description": "A friend ID to send friendship request.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Friend request sent. or You are alredy in friendship."
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/api/otp/send": {
+            "post": {
+                "tags": [
+                    "OTP"
+                ],
+                "summary": "Send 4 digit OTP to user.",
+                "description": "OTP template sending to logged in user on registered email address",
+                "operationId": "sendOtp",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Contact details",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OTP sent to your email id."
+                    },
+                    "401": {
+                        "description": "Error while sending OTP email."
+                    }
+                }
+            }
+        },
+        "/api/otp/verify": {
+            "post": {
+                "tags": [
+                    "OTP"
+                ],
+                "summary": "OTP verification",
+                "description": "Verify OTP generated for registered email address.",
+                "operationId": "verifyOtp",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User details to verify otp",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "otp": {
+                                    "type": "integer",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully. Now reset password using reset-password api. "
+                    },
+                    "400": {
+                        "description": "OTP is invalid. Please provide registered email id."
+                    },
+                    "401": {
+                        "description": "User not found! register yourself now!! or Error while OTP verification."
+                    }
+                }
+            }
+        },
+        "/api/otp/reset-password/{otp}": {
+            "post": {
+                "tags": [
+                    "OTP"
+                ],
+                "summary": "Reset password with OTP",
+                "description": "Reset password using OTP.",
+                "operationId": "resetPassword",
+                "parameters": [
+                    {
+                        "name": "otp",
+                        "in": "path",
+                        "description": "4 digit OTP",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "New password details",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "password": {
+                                    "type": "string",
+                                    "required": true
+                                },
+                                "confirmPassword": {
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You reset password successfully. Login with your new password to continue."
+                    },
+                    "400": {
+                        "description": "Mismatch new password and confirm password! or Error while OTP verification."
+                    },
+                    "401": {
+                        "description": "OTP is expired. Please try again."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "description": "An instance of User Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "required": true
+                },
+                "role": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "description": "An instance of Post Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string",
+                    "required": true
+                },
+                "imageUrl": {
+                    "type": "file",
+                    "required": true
+                },
+                "state": {
+                    "type": "string",
+                    "enum": [
+                        "draft",
+                        "archieve",
+                        "publish"
+                    ],
+                    "default": "draft"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "description": "An instance of Comment Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Like": {
+            "type": "object",
+            "description": "An instance of Like Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Bookmark": {
+            "type": "object",
+            "description": "An instance of Bookmark Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "postId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Friendship": {
+            "type": "object",
+            "description": "An instance of Friendship Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "friend1": {
+                    "type": "string"
+                },
+                "friend2": {
+                    "type": "string"
+                },
+                "friend_request_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "OTP": {
+            "type": "object",
+            "description": "An instance of OTP Class.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "otp": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ApiResponse": {
+            "type": "object",
+            "description": "Every response object structure.",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "required": true
+                },
+                "message": {
+                    "type": "string",
+                    "required": true
+                },
+                "result": {
+                    "type": "array",
+                    "required": false
+                }
+            }
+        }
+    }
+}
