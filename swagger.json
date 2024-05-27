@@ -5,7 +5,7 @@
         "description": "API for Social Media application",
         "title": "Social Media Application API"
     },
-    "host": "localhost:3000",
+    "host": "https://social-media-app-h9hb.onrender.com",
     "securityDefinitions": {
         "jwt": {}
     },
