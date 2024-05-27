@@ -14,6 +14,23 @@ MongoDB for storing and managing the data and project follows REST architectural
 - Knowledge of how to set up MongoDB and how to get your connection string.
 - Postman or Thunderclient installed.
 - Knowledge of using the terminal.
+- If you are running this project in the local environment then you need to add .env file in tne root directory with following environment variables
+  ```
+  BASE_URL=http://localhost:3000
+  PORT=3000
+  MONGO_URI= [Add MongoDB Connection String]
+
+  JWT_SECRET="SOCIAL-MEDIA-REST-API-App@2024"
+  JWT_EXPIRE=1d
+
+  COOKIE_EXPIRES_IN=1
+  SMPT_MAIL=[Your gmail from Which Nodemailer middleware utilize to send email]
+  SMPT_MAIL_PASSWORD=[Respective gmail account password]
+  SMPT_SERVICE=gmail
+  ```
+  Note :
+  - Add proper values to MONGO_URI, SMPT_MAIL and SMPT_MAIL_PASSWORD environment variables as stated in square bracket front of them. Follow the        blogs and documentation mentioned in #Resources section.
+  - Change value of "host" key to "localhost:3000" in the swagger.json file.
 
 ## Installation
 To run this application on your local machine, please follow these steps:
@@ -34,7 +51,7 @@ now you will see that server is running at http://localhost:3000
 
 ## Usage
 
-Go to [Swagger UI](http://localhost:3000/api-docs/) and you can check all the application APIs listed.
+Go to [Local Swagger Social Media App Documentation](http://localhost:3000/api-docs/) or [Live Swagger Social Media App Documentation](https://social-media-app-h9hb.onrender.com/api-docs/) and you can check all the application APIs listed.
 Follow below journey to know insights of application.
 - [ ] Sign-Up
 - [ ] Sign-In
@@ -56,6 +73,17 @@ Follow below journey to know insights of application.
 - [ ] Sign-Out.
 - [ ] Sign-Out from all devices.
 
+## Deployment
+This project is deployed on Render app hosting service. 
+Visit [Social Media App](https://social-media-app-h9hb.onrender.com) to see live hosted app.
+Visit [Swagger Social Media App Documentation](https://social-media-app-h9hb.onrender.com/api-docs/) to get more insights of APIs and to know functionality of application.
+
+
+## Testing 
+You can test all APIs mentioned in the swagger documentation locally in the Postman with request url "https://localhost:3000/{end-point-of-request}"   OR
+As app is hosted on Reder.com so you can use hosted url for testing purpose directlly in the Postman. for example, "https://social-media-app-h9hb.onrender.com/{end-point-of-request}".
+
+
 ## Lessons I learned while working on this: 
 
 - How to model data
@@ -66,10 +94,13 @@ Follow below journey to know insights of application.
 - How to implement reset password using Nodemailer
 - How to document a project APIs using Swagger API
 - How to craft a presentable README.md
+- How deploy NodeJs app on [Render](https://dashboard.render.com/)
 
 ## Resources
 
-### [Swagger Documentation](https://swagger.io/docs/specification/about/)
+#### [How to Send an Email from Your Gmail Account with Nodemailer](https://medium.com/@y.mehnati_49486/how-to-send-an-email-from-your-gmail-account-with-nodemailer-837bf09a7628)
+#### [MongoDB documentation for How to create free cluster](https://www.mongodb.com/docs/guides/atlas/cluster/)
+#### [Swagger Documentation](https://swagger.io/docs/specification/about/)
 
 # Technologies
 
