@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-    res.status(200).send("Welcome to Postway-II");
+    res.status(200).send("Welcome to Social Media NodeJs Application.");
 });
 
 app.use("/api/user", userRouter);
